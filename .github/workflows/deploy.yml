@@ -1,0 +1,36 @@
+```yaml
+   name: Deploy Dream Garage
+
+   on:
+     push:
+       branches: [main]
+     schedule:
+       - cron: "15 2 * * *"   # every day at 02:15 UTC = 10:15 Hong Kong time
+     workflow_dispatch:
+
+   permissions:
+     contents: read
+     pages: write
+     id-token: write
+
+   concurrency:
+     group: pages
+     cancel-in-progress: false
+
+   jobs:
+     deploy:
+       runs-on: ubuntu-latest
+       environment:
+         name: github-pages
+         url: ${{ steps.deployment.outputs.page_url }}
+       steps:
+         - uses: actions/checkout@v4
+         - name: Fetch today's fuel prices
+           run: python3 scripts/update_prices.py || echo "::warning::Price update failed - publishing the last saved prices"
+         - uses: actions/configure-pages@v5
+         - uses: actions/upload-pages-artifact@v3
+           with:
+             path: .
+         - id: deployment
+           uses: actions/deploy-pages@v4
+   ```
