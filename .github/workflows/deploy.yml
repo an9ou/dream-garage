@@ -1,34 +1,71 @@
+# Publishes Dream Garage to GitHub Pages.
+# Runs every time you upload a change, once a day (to refresh fuel prices), or when you press "Run workflow".
 name: Deploy Dream Garage
 
-   on:
-     push:
-       branches: [main]
-     schedule:
-       - cron: "15 2 * * *"   # every day at 02:15 UTC = 10:15 Hong Kong time
-     workflow_dispatch:
+on:
+  push:
+    branches: [main, master]
+  schedule:
+    - cron: "15 2 * * *"   # every day at 02:15 UTC = 10:15 Hong Kong time
+  workflow_dispatch:
 
-   permissions:
-     contents: read
-     pages: write
-     id-token: write
+permissions:
+  contents: read
+  pages: write
+  id-token: write
 
-   concurrency:
-     group: pages
-     cancel-in-progress: false
+concurrency:
+  group: pages
+  cancel-in-progress: false
 
-   jobs:
-     deploy:
-       runs-on: ubuntu-latest
-       environment:
-         name: github-pages
-         url: ${{ steps.deployment.outputs.page_url }}
-       steps:
-         - uses: actions/checkout@v4
-         - name: Fetch today's fuel prices
-           run: python3 scripts/update_prices.py || echo "::warning::Price update failed - publishing the last saved prices"
-         - uses: actions/configure-pages@v5
-         - uses: actions/upload-pages-artifact@v3
-           with:
-             path: .
-         - id: deployment
-           uses: actions/deploy-pages@v4
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - uses: actions/checkout@v4
+
+      # Checks the usual setup problems first, so a failed run tells you exactly what to fix.
+      - name: Check the setup
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          ok=true
+          if [ ! -f index.html ]; then
+            inner=$(ls -d */ 2>/dev/null | while read d; do [ -f "${d}index.html" ] && echo "${d%/}"; done | head -1)
+            if [ -n "$inner" ]; then
+              echo "::error title=index.html is inside the '$inner' folder::The files must be at the top of the repository, not inside a folder. Upload the files that are INSIDE '$inner' (index.html, data, icons, scripts, manifest.webmanifest), then delete the '$inner' folder."
+            else
+              echo "::error title=index.html is missing::Upload index.html to the top of the repository (Code tab → Add file → Upload files)."
+            fi
+            ok=false
+          fi
+          if [ "$(gh api "repos/$GITHUB_REPOSITORY" --jq .private)" = "true" ]; then
+            echo "::error title=The repository is private::Free GitHub Pages needs a public repository. Go to Settings → General → Danger Zone → Change repository visibility → Public, then re-run this workflow."
+            ok=false
+          fi
+          build_type=$(gh api "repos/$GITHUB_REPOSITORY/pages" --jq .build_type 2>/dev/null || echo none)
+          if [ "$build_type" = "none" ]; then
+            echo "::error title=GitHub Pages is not switched on::Go to Settings → Pages and set Source to 'GitHub Actions'. Then open the Actions tab, click this failed run and press 'Re-run all jobs'."
+            ok=false
+          elif [ "$build_type" != "workflow" ]; then
+            echo "::error title=Pages is set to 'Deploy from a branch'::Go to Settings → Pages and change Source from 'Deploy from a branch' to 'GitHub Actions'. Then open the Actions tab, click this failed run and press 'Re-run all jobs'."
+            ok=false
+          fi
+          [ "$ok" = true ] && echo "Setup looks good."
+          [ "$ok" = true ]
+
+      # Browsers can't read the Consumer Council price feed directly (it has no CORS header),
+      # so GitHub fetches it here and publishes it as data/prices.json next to the page.
+      # If the fetch fails, the site is still published with the last saved prices.
+      - name: Fetch today's fuel prices
+        run: python3 scripts/update_prices.py || echo "::warning::Price update failed - publishing the last saved prices"
+
+      - uses: actions/configure-pages@v5
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: .
+      - id: deployment
+        uses: actions/deploy-pages@v5
