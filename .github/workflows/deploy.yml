@@ -1,5 +1,4 @@
-```yaml
-   name: Deploy Dream Garage
+name: Deploy Dream Garage
 
    on:
      push:
@@ -33,4 +32,3 @@
              path: .
          - id: deployment
            uses: actions/deploy-pages@v4
-   ```
