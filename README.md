@@ -9,11 +9,14 @@ This folder is ready to publish free on **GitHub Pages**. Once it's online, open
 | File | What it is |
 |---|---|
 | `index.html` | The whole app: pages, styles and code in one file |
+| `cars/` | The 60 car photos (plus sharper copies of the 5 home-page photos in `cars/hero/`), all freely licensed from Wikimedia Commons |
 | `data/prices.json` | Today's fuel prices. GitHub replaces this with a fresh copy every day |
 | `scripts/update_prices.py` | The small script GitHub runs to fetch those prices |
 | `.github/workflows/deploy.yml` | Tells GitHub how to publish the site (hidden folder, see step 5) |
 | `setup/deploy.yml` | A visible copy of the same file, to copy from in step 5 |
 | `setup/supabase-meets.sql` | Creates the shared car-meet tables in Supabase (see *Share car meets*) |
+| `setup/supabase-meet-summary.sql` | Adds the **meet_summary** view: one row per meet with attendance counts |
+| `setup/supabase-garage.sql` | Stores each person's garage in their account (see *Save garages to accounts*) |
 | `supabase-config.js` | Your Supabase settings for real accounts (see *Switch on real accounts*) |
 | `manifest.webmanifest`, `icons/` | The app name and icon for "Add to Home Screen" |
 
@@ -21,7 +24,7 @@ This folder is ready to publish free on **GitHub Pages**. Once it's online, open
 
 1. **Unzip** this folder on your computer.
 2. **Create a repository.** Sign in at github.com (free account), click **+ → New repository**, name it `dream-garage`, keep it **Public**, don't tick any boxes, then click **Create repository**. (Free GitHub Pages needs a public repository.)
-3. **Upload the files.** On the new, empty repository page, click **uploading an existing file**. Drag in everything inside the folder: `index.html`, `supabase-config.js`, `manifest.webmanifest`, `README.md`, and the `data`, `icons`, `scripts` and `setup` folders. Click **Commit changes**.
+3. **Upload the files.** On the new, empty repository page, click **uploading an existing file**. Drag in everything inside the folder: `index.html`, `supabase-config.js`, `manifest.webmanifest`, `README.md`, and the `cars`, `data`, `icons`, `scripts` and `setup` folders. Click **Commit changes**.
 4. **Switch Pages on.** Go to **Settings → Pages**. Under *Build and deployment*, set **Source** to **GitHub Actions**.
 5. **Add the publish instructions.** Mac Finder hides folders whose names start with a dot, so the easiest way is to create this file on GitHub itself:
    - On your computer, open `setup/deploy.yml` from this folder in TextEdit or Notepad, select everything and copy it. (Copy from that file, not from this README: copying from a formatted page can add extra marks and spaces that break it.)
@@ -76,11 +79,21 @@ What the script sets up, enforced by the database itself:
 | The host of a meet | Edit or cancel it (cancelling also removes its RSVPs) |
 | Nobody | Host in someone else's name, change someone else's RSVP, date a meet in the past, or go over a meet's capacity |
 
-You can see the data any time in Supabase under **Table Editor → events** and **rsvps**. Each person's **garage** (saved cars) is still kept in their own browser.
+You can see the data any time in Supabase under **Table Editor → events** and **rsvps**. For one readable row per meet with attendance counts, also run `setup/supabase-meet-summary.sql` and open **meet_summary**.
+
+## Save garages to accounts (Supabase, about 1 minute)
+
+This stores each person's saved cars in their account, so their garage follows them to any phone or computer.
+
+1. In Supabase open **SQL Editor → New query**, paste the whole of `setup/supabase-garage.sql`, and click **Run** (confirm the warning if one appears).
+2. Upload the latest `index.html` to GitHub.
+3. Log in on the site, open **Garage** and add a car. Log in on another device: the same cars, in the same order.
+
+Each garage is private: only its owner can see or change it. Cars someone saved on a phone before accounts existed are moved into their account automatically the first time they log in there. To see everyone's garages, open **Table Editor → garage_summary** (visible only to you in the dashboard).
 
 ## Update the site later
 
-On GitHub, click **Add file → Upload files**, drop in the new `index.html` and click **Commit changes**. GitHub publishes it again automatically in about a minute. If your phone still shows the old version, pull down to refresh.
+On GitHub, click **Add file → Upload files**, drop in the new `index.html` (and any new folders, such as `cars`) and click **Commit changes**. GitHub publishes it again automatically in about a minute. If your phone still shows the old version, pull down to refresh.
 
 ## Where each feature gets its data
 
@@ -88,7 +101,7 @@ On GitHub, click **Add file → Upload files**, drop in the new `index.html` and
 |---|---|---|
 | Accounts | Supabase Auth (once `supabase-config.js` is filled in) | Yes |
 | Car meets, RSVPs, calendar | Your Supabase database (once `setup/supabase-meets.sql` has been run); otherwise each browser | Yes, shared |
-| Garage (saved cars) | Each person's own browser | Yes |
+| Garage (saved cars) | Each person's Supabase account (once `setup/supabase-garage.sql` has been run); otherwise each browser | Yes, private per person |
 | Map | OpenStreetMap map tiles, via the Leaflet library | Yes |
 | Nearby stations | OpenStreetMap search (Nominatim), with backup servers and a saved list of all 254 Hong Kong stations | Yes, live |
 | Your location | The phone's GPS; needs an `https://` link and your permission | Yes |
@@ -106,6 +119,12 @@ Why fuel prices go through GitHub: the Consumer Council's server doesn't give we
 - **Sign-up says "We sent a confirmation link", but the email never arrives.** That's Supabase's built-in email limit (step 3 of *Switch on real accounts*). Switch **Confirm email** off, or connect your own email service.
 - **An email link opens an error page or "localhost".** The **Site URL** and **Redirect URLs** in Supabase don't match your GitHub link yet (step 2).
 - **The Events tab says "The shared meets aren't set up yet".** Run `setup/supabase-meets.sql` in the Supabase SQL Editor (see *Share car meets*).
+- **The Garage says "Garage saving isn't set up yet".** Run `setup/supabase-garage.sql` in the Supabase SQL Editor.
 - **"Sorry, this meet is full".** The meet has reached its capacity. The host can raise it by editing the meet in **Table Editor → events**.
 - **"The Supabase settings look wrong".** Check `supabase-config.js`: the URL should look like `https://abcd….supabase.co`, and the key should start with `sb_publishable_`.
 - **"Use my location" doesn't work.** Make sure you opened the `https://…github.io/…` link, not the file. On iPhone check **Settings → Privacy & Security → Location Services → Safari Websites**.
+
+## Car photos and prices
+
+- **Photos:** every car photo is from Wikimedia Commons and free to reuse, as long as the photographer is credited. Each photo shows a small credit, and the **Photo & price credits** page (linked under the showroom and in the footer) lists the photographer, licence and original for every car. Keep these credits if you reuse the photos.
+- **Prices (HK$):** *HK list price* is the Hong Kong retail price from the source and date shown. For cars that are no longer sold new, *Last sold* is the most recent public sale found, usually an auction, with US dollars converted at HK$7.8. The credits page links the source for every price. Prices are a snapshot from September 2026 and don't update by themselves.
