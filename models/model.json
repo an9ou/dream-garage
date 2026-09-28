@@ -1,0 +1,17 @@
+{
+  "file": "964-speedster.glb",
+  "title": "1993 Porsche 911 Carrera 2 Speedster",
+  "author": "OUTPISTON",
+  "license": "CC BY-NC-SA 4.0",
+  "license_url": "http://creativecommons.org/licenses/by-nc-sa/4.0/",
+  "source": "https://skfb.ly/pABY6",
+  "length": 4.25,
+  "paintTexture": {
+    "material": "Vehicle_Exterior_mm_ext",
+    "meshes": "(BODY|DOOR_(LEFT|RIGHT)|HOOD|BOOT|FRONTBUMPER|REARBUMPER|MIRROR_(LEFT|RIGHT))_mm_ext",
+    "maxSat": 0.18,
+    "maxV": 0.3
+  },
+  "lightsMaterial": "Vehicle_Exterior_mm_lights",
+  "doubleSided": "(wheel|tyre|rotor)"
+}

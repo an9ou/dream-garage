@@ -1,0 +1,11 @@
+{
+  "file": "car.glb",
+  "title": "Porsche 911 (964)",
+  "author": "Name of the 3D artist",
+  "license": "CC BY 4.0",
+  "source": "https://sketchfab.com/3d-models/...",
+  "length": 4.25,
+  "flip": false,
+  "rotateY": 0,
+  "paintMatch": "(paint|body|carpaint|exterior|coat)"
+}

@@ -10,6 +10,8 @@ This folder is ready to publish free on **GitHub Pages**. Once it's online, open
 |---|---|
 | `index.html` | The whole app: pages, styles and code in one file |
 | `cars/` | The 60 car photos (plus sharper copies of the 5 home-page photos in `cars/hero/`), all freely licensed from Wikimedia Commons |
+| `js/` | The 3D turntable on the Home page (three.js, MIT licence) |
+| `models/` | The 3D car shown on the turntable and its settings (`model.json`) |
 | `data/prices.json` | Today's fuel prices. GitHub replaces this with a fresh copy every day |
 | `scripts/update_prices.py` | The small script GitHub runs to fetch those prices |
 | `.github/workflows/deploy.yml` | Tells GitHub how to publish the site (hidden folder, see step 5) |
@@ -24,7 +26,7 @@ This folder is ready to publish free on **GitHub Pages**. Once it's online, open
 
 1. **Unzip** this folder on your computer.
 2. **Create a repository.** Sign in at github.com (free account), click **+ → New repository**, name it `dream-garage`, keep it **Public**, don't tick any boxes, then click **Create repository**. (Free GitHub Pages needs a public repository.)
-3. **Upload the files.** On the new, empty repository page, click **uploading an existing file**. Drag in everything inside the folder: `index.html`, `supabase-config.js`, `manifest.webmanifest`, `README.md`, and the `cars`, `data`, `icons`, `scripts` and `setup` folders. Click **Commit changes**.
+3. **Upload the files.** On the new, empty repository page, click **uploading an existing file**. Drag in everything inside the folder: `index.html`, `supabase-config.js`, `manifest.webmanifest`, `README.md`, and the `cars`, `data`, `icons`, `js`, `models`, `scripts` and `setup` folders. Click **Commit changes**.
 4. **Switch Pages on.** Go to **Settings → Pages**. Under *Build and deployment*, set **Source** to **GitHub Actions**.
 5. **Add the publish instructions.** Mac Finder hides folders whose names start with a dot, so the easiest way is to create this file on GitHub itself:
    - On your computer, open `setup/deploy.yml` from this folder in TextEdit or Notepad, select everything and copy it. (Copy from that file, not from this README: copying from a formatted page can add extra marks and spaces that break it.)
@@ -128,3 +130,11 @@ Why fuel prices go through GitHub: the Consumer Council's server doesn't give we
 
 - **Photos:** every car photo is from Wikimedia Commons and free to reuse, as long as the photographer is credited. Each photo shows a small credit, and the **Photo & price credits** page (linked under the showroom and in the footer) lists the photographer, licence and original for every car. Keep these credits if you reuse the photos.
 - **Prices (HK$):** *HK list price* is the Hong Kong retail price from the source and date shown. For cars that are no longer sold new, *Last sold* is the most recent public sale found, usually an auction, with US dollars converted at HK$7.8. The credits page links the source for every price. Prices are a snapshot from September 2026 and don't update by themselves.
+
+## The 3D car on the Home page
+
+The turntable shows the car in `models/` (currently "1993 Porsche 911 Carrera 2 Speedster" by OUTPISTON, CC BY-NC-SA 4.0, https://skfb.ly/pABY6). Visitors can drag to spin it, change its paint and switch the lights on.
+
+- **Use a different car:** put its `.glb` file in `models/` and change `file`, `title`, `author`, `license` and `source` in `models/model.json`. Check its licence allows use on a website, and keep the credit.
+- **Go back to the built-in car:** delete `models/model.json` (the built-in car is an original design, so it needs no credit).
+- The Speedster's licence is non-commercial: if the site ever makes money, replace the model first.
