@@ -1,11 +1,15 @@
-{
-  "file": "car.glb",
-  "title": "Porsche 911 (964)",
-  "author": "Name of the 3D artist",
-  "license": "CC BY 4.0",
-  "source": "https://sketchfab.com/3d-models/...",
-  "length": 4.25,
-  "flip": false,
-  "rotateY": 0,
-  "paintMatch": "(paint|body|carpaint|exterior|coat)"
-}
+[
+  {
+    "label": "Button text",
+    "file": "car.glb",
+    "title": "Title of the 3D model",
+    "author": "Name of the 3D artist",
+    "license": "CC BY 4.0",
+    "license_url": "https://creativecommons.org/licenses/by/4.0/",
+    "source": "https://sketchfab.com/3d-models/...",
+    "length": 4.4,
+    "flip": false,
+    "rotateY": 0,
+    "paintMatch": "(paint|body|carpaint|exterior|coat)"
+  }
+]

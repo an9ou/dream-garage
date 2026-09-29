@@ -11,7 +11,7 @@ This folder is ready to publish free on **GitHub Pages**. Once it's online, open
 | `index.html` | The whole app: pages, styles and code in one file |
 | `cars/` | The 60 car photos (plus sharper copies of the 5 home-page photos in `cars/hero/`), all freely licensed from Wikimedia Commons |
 | `js/` | The 3D turntable on the Home page (three.js, MIT licence) |
-| `models/` | The 3D car shown on the turntable and its settings (`model.json`) |
+| `models/` | The 3D cars shown on the turntable and their settings and credits (`model.json`) |
 | `data/prices.json` | Today's fuel prices. GitHub replaces this with a fresh copy every day |
 | `scripts/update_prices.py` | The small script GitHub runs to fetch those prices |
 | `.github/workflows/deploy.yml` | Tells GitHub how to publish the site (hidden folder, see step 5) |
@@ -131,10 +131,17 @@ Why fuel prices go through GitHub: the Consumer Council's server doesn't give we
 - **Photos:** every car photo is from Wikimedia Commons and free to reuse, as long as the photographer is credited. Each photo shows a small credit, and the **Photo & price credits** page (linked under the showroom and in the footer) lists the photographer, licence and original for every car. Keep these credits if you reuse the photos.
 - **Prices (HK$):** *HK list price* is the Hong Kong retail price from the source and date shown. For cars that are no longer sold new, *Last sold* is the most recent public sale found, usually an auction, with US dollars converted at HK$7.8. The credits page links the source for every price. Prices are a snapshot from September 2026 and don't update by themselves.
 
-## The 3D car on the Home page
+## The 3D cars on the Home page
 
-The turntable shows the car in `models/` (currently "1993 Porsche 911 Carrera 2 Speedster" by OUTPISTON, CC BY-NC-SA 4.0, https://skfb.ly/pABY6). Visitors can drag to spin it, change its paint and switch the lights on.
+The turntable shows the cars listed in `models/model.json`. Two buttons above it switch between them, and the site remembers each visitor's choice. Visitors can drag to spin the car, change its paint and switch the lights on.
 
-- **Use a different car:** put its `.glb` file in `models/` and change `file`, `title`, `author`, `license` and `source` in `models/model.json`. Check its licence allows use on a website, and keep the credit.
+- **190E Evo:** "Mercedes 190E EVO 1982 3D Model Free" by Betier Models, CC BY 4.0, https://sketchfab.com/3d-models/mercedes-190e-evo-1982-3d-model-free-15e5576f4b724f2db357165caed3492b. The file is compressed (meshopt) so it loads faster; it looks the same as the original.
+- **964 Speedster:** "1993 Porsche 911 Carrera 2 Speedster" by OUTPISTON, CC BY-NC-SA 4.0, https://skfb.ly/pABY6.
+
+Each car shows its credit on the turntable, and the Photo & price credits page lists both. Keep these credits.
+
+- **Add another car:** put its `.glb` file in `models/` and add an entry to the list in `models/model.json` with `label` (the button text), `file`, `title`, `author`, `license` and `source`. Check its licence allows use on a website.
+- **Remove a car:** delete its entry from the list. With only one car left, the buttons disappear.
 - **Go back to the built-in car:** delete `models/model.json` (the built-in car is an original design, so it needs no credit).
-- The Speedster's licence is non-commercial: if the site ever makes money, replace the model first.
+- **Compress a large model** (optional): `npx @gltf-transform/cli meshopt in.glb out.glb` usually makes it 3–4 times smaller. The turntable can open these files.
+- The Speedster's licence is non-commercial: if the site ever makes money, remove that model first. The 190E's CC BY 4.0 licence also allows commercial use with the credit, but car makers' names and badges are their trademarks, so check before using either car commercially.
