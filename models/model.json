@@ -12,7 +12,39 @@
     "paintMatch": "Car_body_color",
     "headMatch": "^head_light$",
     "tailMatch": "^Car_backlight_glass_red(\\.001)?$",
-    "lensMatch": "(backlight|backight|turn_light|headlight)"
+    "lensMatch": "(backlight|backight|turn_light|headlight)",
+    "cabin": {
+      "views": [
+        {
+          "name": "Driver",
+          "eye": [
+            0.0,
+            1.1,
+            -0.34
+          ],
+          "look": [
+            0.9,
+            0.82,
+            -0.26
+          ],
+          "fov": 70
+        },
+        {
+          "name": "Back seat",
+          "eye": [
+            -0.95,
+            1.12,
+            -0.28
+          ],
+          "look": [
+            0.8,
+            0.86,
+            0.02
+          ],
+          "fov": 70
+        }
+      ]
+    }
   },
   {
     "label": "964 Speedster",
@@ -30,6 +62,38 @@
       "maxV": 0.3
     },
     "lightsMaterial": "Vehicle_Exterior_mm_lights",
-    "doubleSided": "(wheel|tyre|rotor)"
+    "doubleSided": "(wheel|tyre|rotor)",
+    "cabin": {
+      "views": [
+        {
+          "name": "Driver",
+          "eye": [
+            -0.14,
+            1.02,
+            -0.33
+          ],
+          "look": [
+            0.7,
+            0.84,
+            -0.25
+          ],
+          "fov": 70
+        },
+        {
+          "name": "Passenger",
+          "eye": [
+            -0.14,
+            1.02,
+            0.33
+          ],
+          "look": [
+            0.6,
+            0.82,
+            -0.18
+          ],
+          "fov": 70
+        }
+      ]
+    }
   }
 ]
