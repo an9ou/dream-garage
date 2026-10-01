@@ -135,7 +135,7 @@ Why fuel prices go through GitHub: the Consumer Council's server doesn't give we
 
 The turntable shows the cars listed in `models/model.json`. Two buttons above it switch between them, and the site remembers each visitor's choice. Visitors can drag to spin the car, change its paint and switch the lights on.
 
-The **Outside / Driver / Back seat** buttons (Passenger for the two-seat 964) move the camera into the car to show the dashboard and seats; drag to look around. Each car's seat positions are under `cabin` in `models/model.json` (`eye` is where the camera sits and `look` where it points, in metres: +X is the front, +Y up, -Z the driver's side).
+The **Outside / Driver / Back seat** buttons (Passenger for the two-seat 964) move the camera into the car to show the dashboard and seats; drag to look around. The inside view is drawn with extra care: daylight coming in through the windows with real shadows, soft shading in the corners (ambient occlusion), smoothed edges built up over a few frames while the view is still, and a dome light at night. On slower phones the extra effects wait until you stop dragging. Each car's seat positions are under `cabin` in `models/model.json` (`eye` is where the camera sits and `look` where it points, in metres: +X is the front, +Y up, -Z the driver's side).
 
 - **190E Evo:** "Mercedes 190E EVO 1982 3D Model Free" by Betier Models, CC BY 4.0, https://sketchfab.com/3d-models/mercedes-190e-evo-1982-3d-model-free-15e5576f4b724f2db357165caed3492b. The file is compressed (meshopt) so it loads faster; it looks the same as the original.
 - **964 Speedster:** "1993 Porsche 911 Carrera 2 Speedster" by OUTPISTON, CC BY-NC-SA 4.0, https://skfb.ly/pABY6.
