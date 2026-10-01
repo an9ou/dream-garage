@@ -59,7 +59,11 @@
       "material": "Vehicle_Exterior_mm_ext",
       "meshes": "(BODY|DOOR_(LEFT|RIGHT)|HOOD|BOOT|FRONTBUMPER|REARBUMPER|MIRROR_(LEFT|RIGHT))_mm_ext",
       "maxSat": 0.18,
-      "maxV": 0.3
+      "maxV": 0.3,
+      "finish": {
+        "clearcoat": 1,
+        "clearcoatRoughness": 0.02
+      }
     },
     "lightsMaterial": "Vehicle_Exterior_mm_lights",
     "doubleSided": "(wheel|tyre|rotor)",
@@ -94,6 +98,12 @@
           "fov": 70
         }
       ]
+    },
+    "note": "file compressed for faster loading",
+    "env": "studio",
+    "inside": {
+      "exposure": 1.35,
+      "win": 80
     }
   }
 ]

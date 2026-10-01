@@ -137,13 +137,18 @@ The turntable shows the cars listed in `models/model.json`. Two buttons above it
 
 The **Outside / Driver / Back seat** buttons (Passenger for the two-seat 964) move the camera into the car to show the dashboard and seats; drag to look around. The inside view is drawn with extra care: daylight coming in through the windows with real shadows, soft shading in the corners (ambient occlusion), smoothed edges built up over a few frames while the view is still, and a dome light at night. On slower phones the extra effects wait until you stop dragging. Each car's seat positions are under `cabin` in `models/model.json` (`eye` is where the camera sits and `look` where it points, in metres: +X is the front, +Y up, -Z the driver's side).
 
-- **190E Evo:** "Mercedes 190E EVO 1982 3D Model Free" by Betier Models, CC BY 4.0, https://sketchfab.com/3d-models/mercedes-190e-evo-1982-3d-model-free-15e5576f4b724f2db357165caed3492b. The file is compressed (meshopt) so it loads faster; it looks the same as the original.
+- **190E Evo:** "Mercedes 190E EVO 1982 3D Model Free" by Betier Models, CC BY 4.0, https://sketchfab.com/3d-models/mercedes-190e-evo-1982-3d-model-free-15e5576f4b724f2db357165caed3492b.
 - **964 Speedster:** "1993 Porsche 911 Carrera 2 Speedster" by OUTPISTON, CC BY-NC-SA 4.0, https://skfb.ly/pABY6.
+
+Both files are compressed so they load faster (meshopt for the shapes, lossless WebP for the pictures); they look the same as the originals. Each one also has a gzip-packed copy next to it (`.glb.gz`, about a third smaller), which the page downloads and unpacks when the browser can; otherwise it uses the `.glb`. The deploy workflow re-makes the packed copies every time it publishes, so they always match.
 
 Each car shows its credit on the turntable, and the Photo & price credits page lists both. Keep these credits.
 
 - **Add another car:** put its `.glb` file in `models/` and add an entry to the list in `models/model.json` with `label` (the button text), `file`, `title`, `author`, `license` and `source`. Check its licence allows use on a website.
 - **Remove a car:** delete its entry from the list. With only one car left, the buttons disappear.
 - **Go back to the built-in car:** delete `models/model.json` (the built-in car is an original design, so it needs no credit).
-- **Compress a large model** (optional): `npx @gltf-transform/cli meshopt in.glb out.glb` usually makes it 3–4 times smaller. The turntable can open these files.
+- **Compress a large model** (optional): `npx @gltf-transform/cli webp in.glb step.glb --lossless true`, then `npx @gltf-transform/cli meshopt step.glb out.glb`. The turntable can open these files. If you change a `.glb` without the deploy workflow, also replace its `.glb.gz` (`gzip -9 -k -f file.glb`) or delete the old `.gz`.
+- **Per-car look** (optional, in `models/model.json`): `"env": "studio"` gives the car photo-studio reflections outside (the 964 uses this), `"inside": {"exposure": 1.35}` brightens its inside views, and for cars repainted from a texture, `paintTexture.finish` sets the clear coat.
+
+**Loading:** when the Home page opens, the car list, the 3D code and the chosen car's file all start downloading at once, and a loading bar shows progress until the car is ready (no stand-in car any more). The other car downloads quietly afterwards so switching is instant (skipped on data-saver and slow connections). The map library only loads when the Fuel page is opened.
 - The Speedster's licence is non-commercial: if the site ever makes money, remove that model first. The 190E's CC BY 4.0 licence also allows commercial use with the credit, but car makers' names and badges are their trademarks, so check before using either car commercially.
